@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buku Tamu</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#f5f0e8',
+            paper: '#faf7f2',
+            ink: '#1a1410',
+            gold: '#b8860b',
+            rust: '#8b3a2a',
+          },
+          fontFamily: {
+            serif: ['Playfair Display', 'serif'],
+            sans: ['DM Sans', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Untuk animasi & rating star yang agak tricky di tailwind murni */
+    .stars { display: flex; flex-direction: row-reverse; gap: 0.5rem; }
+    .stars input { display: none; }
+    .stars label { font-size: 1.8rem; cursor: pointer; color: #ccc; transition: all 0.2s; }
+    .stars input:checked ~ label, .stars label:hover, .stars label:hover ~ label { color: #d4a820; transform: scale(1.1); }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in { animation: fadeIn 0.4s ease forwards; }
+  </style>
+</head>
+<body class="bg-cream font-sans text-ink min-h-screen relative overflow-x-hidden">
+
+  <div class="fixed inset-0 pointer-events-none z-0 opacity-40">
+    <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-gold/10 blur-[100px]"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-rust/10 blur-[100px]"></div>
+  </div>
+
+  <header class="relative z-10 text-center py-16 px-5 border-b border-gold/20">
+    <p class="text-[11px] tracking-[6px] text-gold uppercase mb-3">✦ &nbsp; Selamat Datang &nbsp; ✦</p>
+    <h1 class="font-serif text-5xl md:text-7xl font-bold leading-tight">Buku <em class="italic text-gold">Tamu</em></h1>
+    <p class="mt-4 text-gray-600 font-light">Tinggalkan pesan dan kenangan indah Anda di sini</p>
+  </header>
+
+  <div class="relative z-10 bg-ink text-cream py-6 px-5 flex justify-center gap-10 flex-wrap shadow-xl">
+    <div class="text-center">
+      <span class="block font-serif text-3xl text-gold" id="stat-total">—</span>
+      <span class="text-[10px] tracking-[3px] uppercase opacity-50">Total Pesan</span>
+    </div>
+    <div class="text-center">
+      <span class="block font-serif text-3xl text-gold" id="stat-rating">—</span>
+      <span class="text-[10px] tracking-[3px] uppercase opacity-50">Avg Rating</span>
+    </div>
+    <div class="text-center">
+      <span class="block font-serif text-3xl text-gold" id="stat-kota">—</span>
+      <span class="text-[10px] tracking-[3px] uppercase opacity-50">Kota/Daerah</span>
+    </div>
+  </div>
+
+  <main class="relative z-10 max-w-6xl mx-auto py-12 px-5 grid grid-cols-1 md:grid-cols-[1fr_1.4fr] gap-12 items-start">
+    
+    <section class="md:sticky md:top-8">
+      <p class="text-[11px] tracking-[5px] text-gold uppercase mb-5 font-bold">✦ Tulis Pesan</p>
+      <div class="bg-paper border border-gold/20 p-8 shadow-2xl relative overflow-hidden">
+        <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-gold via-rust to-gold"></div>
+        <h2 class="font-serif text-2xl mb-6">Tinggalkan Pesan</h2>
+        
+        <div id="alert" class="hidden p-3 mb-4 rounded text-sm border"></div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-[10px] tracking-widest uppercase text-gray-500 mb-1">Nama Lengkap</label>
+            <input type="text" id="name" class="w-full p-3 border border-gray-300 focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all" placeholder="Nama Anda">
+          </div>
+          <div>
+            <label class="block text-[10px] tracking-widest uppercase text-gray-500 mb-1">Email</label>
+            <input type="email" id="email" class="w-full p-3 border border-gray-300 focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all" placeholder="email@contoh.com">
+          </div>
+          <div>
+            <label class="block text-[10px] tracking-widest uppercase text-gray-500 mb-1">Asal Kota</label>
+            <input type="text" id="origin" class="w-full p-3 border border-gray-300 focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all" placeholder="Jakarta, Medan, dll.">
+          </div>
+          <div>
+            <label class="block text-[10px] tracking-widest uppercase text-gray-500 mb-1">Pesan</label>
+            <textarea id="message" class="w-full p-3 border border-gray-300 focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all min-h-[120px]" placeholder="Tulis pesan..."></textarea>
+          </div>
+
+          <div>
+            <label class="block text-[10px] tracking-widest uppercase text-gray-500 mb-2">Penilaian Anda</label>
+            <div class="stars">
+              <input type="radio" name="rating" id="r5" value="5" checked /> <label for="r5">★</label>
+              <input type="radio" name="rating" id="r4" value="4" /> <label for="r4">★</label>
+              <input type="radio" name="rating" id="r3" value="3" /> <label for="r3">★</label>
+              <input type="radio" name="rating" id="r2" value="2" /> <label for="r2">★</label>
+              <input type="radio" name="rating" id="r1" value="1" /> <label for="r1">★</label>
+            </div>
+          </div>
+
+          <button id="submit-btn" onclick="submitMessage()" class="w-full py-4 bg-ink text-cream uppercase tracking-[3px] text-xs hover:bg-gold hover:text-white transition-all active:scale-95 disabled:opacity-50">
+            Kirim Pesan
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="font-serif text-2xl mb-6 flex items-baseline gap-3">
+        Pesan Tamu
+        <span id="count-badge" class="font-sans text-[10px] bg-ink text-white px-2 py-1 rounded-full">0</span>
+      </h2>
+      
+      <div id="messages-container" class="space-y-4">
+        <div class="text-center py-20 text-gray-400">
+          <div class="animate-spin h-8 w-8 border-4 border-gold/20 border-t-gold rounded-full mx-auto mb-4"></div>
+          <p>Memuat pesan...</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="relative z-10 text-center py-10 border-t border-gold/10 text-[11px] text-gray-500 tracking-widest">
+    ✦ &nbsp; BUKU TAMU &nbsp; ✦ &nbsp; SIPEGU PROJECT &nbsp; ✦
+  </footer>
+
+  <script>
+    
+    
+    function showAlert(type, msg) {
+      const el = document.getElementById('alert');
+      el.textContent = msg;
+      el.className = `p-3 mb-4 rounded text-sm border animate-fade-in block ${type === 'success' ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'}`;
+      setTimeout(() => el.className = 'hidden', 5000);
+    }
+
+
+
+  // ─── Load Stats ───────────────────────────────────
+  async function loadStats() {
+    try {
+      const res = await fetch('/api/stats');
+      const { data } = await res.json();
+      document.getElementById('stat-total').textContent = data.total || 0;
+      document.getElementById('stat-rating').textContent = data.avg_rating || '—';
+      document.getElementById('stat-kota').textContent = data.total_kota || 0;
+    } catch (e) { console.error('Gagal memuat stats:', e); }
+  }
+
+  // ─── Load Messages ────────────────────────────────
+  async function loadMessages() {
+    const container = document.getElementById('messages-container');
+    try {
+      const res = await fetch('/api/messages');
+      const { data } = await res.json();
+
+      document.getElementById('count-badge').textContent = data.length;
+
+      if (data.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div style="font-size:2rem;margin-bottom:8px">📖</div>
+            <strong>Belum ada pesan</strong>
+            <p>Jadilah yang pertama menulis di sini!</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = data.map(msg => `
+        <div class="message-card">
+          <div class="message-header">
+            <div class="message-avatar">${msg.name.charAt(0).toUpperCase()}</div>
+            <div class="message-meta">
+              <div class="message-name">${escHtml(msg.name)}</div>
+              <div class="message-info">
+                <span>📍 ${escHtml(msg.origin)}</span>
+                <span>🕐 ${msg.created_at}</span>
+              </div>
+            </div>
+            <div class="star-display">${'★'.repeat(msg.rating)}${'☆'.repeat(5 - msg.rating)}</div>
+          </div>
+          <p class="message-text">${escHtml(msg.message)}</p>
+        </div>
+      `).join('');
+    } catch (e) {
+      container.innerHTML = `<div class="empty-state">
+        <p style="color:#8b3a2a">❌ Gagal memuat pesan. Cek koneksi server.</p>
+      </div>`;
+    }
+  }
+
+  // ─── Submit Message ───────────────────────────────
+  async function submitMessage() {
+    const alertEl = document.getElementById('alert');
+    const btn = document.getElementById('submit-btn');
+
+    const name    = document.getElementById('name').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const origin  = document.getElementById('origin').value.trim();
+    const message = document.getElementById('message').value.trim();
+    const rating  = document.querySelector('input[name="rating"]:checked')?.value || 5;
+    
+    // Validasi client-side
+    if (!name || !email || !origin || !message) {
+      showAlert('error', '⚠️ Semua kolom wajib diisi!');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Mengirim...';
+    alertEl.className = 'alert';
+
+    try {
+      const res = await fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, origin, message, rating })
+      });
+      
+      const data = await res.json();
+      
+      if (!res.ok) {
+        showAlert('error', '❌ ' + (data.error || 'Gagal mengirim pesan'));
+      } else {
+        showAlert('success', '✅ Pesan berhasil dikirim! Terima kasih.');
+        // Reset form
+        ['name','email','origin','message'].forEach(id =>
+        document.getElementById(id).value = '');
+        document.getElementById('r5').checked = true;
+        // Reload
+        await loadMessages();
+        await loadStats();
+      }
+    } catch (e) {
+      showAlert('error', '❌ Gagal menghubungi server. Coba lagi.');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Kirim Pesan';
+    }
+  }
+  
+  function showAlert(type, msg) {
+    const el = document.getElementById('alert');
+    el.textContent = msg;
+    el.className = 'alert ' + type;
+    setTimeout(() => el.className = 'alert', 5000);
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  // ─── Init ─────────────────────────────────────────
+  loadStats();
+  loadMessages();
+
+
+
+      </script>
+    </body>
+    </html>
