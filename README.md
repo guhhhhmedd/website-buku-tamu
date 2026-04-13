@@ -2,7 +2,7 @@
 
 Sistem manajemen kunjungan tamu untuk kantor Kominfo Stan.
 
-## Alur Sistem
+## Alur Sistem  
 
 ```
 Tamu → Isi Form → Kirim Permohonan
