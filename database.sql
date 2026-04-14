@@ -65,7 +65,7 @@ CREATE TABLE `kunjungan` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +74,7 @@ CREATE TABLE `kunjungan` (
 
 LOCK TABLES `kunjungan` WRITE;
 /*!40000 ALTER TABLE `kunjungan` DISABLE KEYS */;
-INSERT INTO `kunjungan` VALUES (1,'ijazahnyamanawi','jokowi@gmail.com','08123456789','roy suryo fc','bapak mulyono raja tipu-tipu','mencari ijazah yang hilang','2022-09-09','09:59:00','ditolak','ijazahnya asli','2026-04-13 14:04:22','2026-04-13 14:04:56'),(2,'ijazahnyamanawi','jokowi@gmail.com','08123456789','roy suryo fc','bapak mulyono raja tipu-tipu','ijazah','9922-09-09','07:59:00','ditolak','mulyono','2026-04-13 14:26:14','2026-04-13 14:28:07');
+INSERT INTO `kunjungan` VALUES (2,'ijazahnyamanawi','jokowi@gmail.com','08123456789','roy suryo fc','bapak mulyono raja tipu-tipu','ijazah','9922-09-09','07:59:00','ditolak','mulyono','2026-04-13 14:26:14','2026-04-13 14:28:07'),(3,'ijazahnyamanawi','teguharif5505@gmail.com','081360325181','roy suryo fc','bapak mulyono raja tipu-tipu','daasdas','2026-05-09','05:27:00','disetujui','gas','2026-04-13 15:22:34','2026-04-13 15:23:28'),(4,'ijazahnyamanawi','teguharif5505@gmail.com','081360325181','roy suryo fc','bapak mulyono raja tipu-tipu','addas','2026-05-09','03:36:00','disetujui','','2026-04-13 15:31:05','2026-04-13 15:31:24'),(5,'ijazahnyamanawi','teguh.5233151037@gmail.com','08123456789','roy suryo fc','bapak mulyono raja tipu-tipu','adadasda','2026-05-09','14:42:00','disetujui','gas','2026-04-14 11:42:21','2026-04-14 11:42:51');
 /*!40000 ALTER TABLE `kunjungan` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,4 +117,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-04-13 21:30:28
+-- Dump completed on 2026-04-14 19:14:10

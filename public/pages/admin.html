@@ -4,351 +4,156 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>Admin — Buku Tamu Kominfo Stan</title>
+<script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+        colors: {
+          navy: { DEFAULT: '#0f2a4a', 2: '#1a3a5c' },
+          brand: { DEFAULT: '#1d6cb0', light: '#3b9de0' },
+        }
+      }
+    }
+  }
+</script>
 <style>
-  :root {
-    --navy:  #0f2a4a;
-    --navy2: #1a3a5c;
-    --blue:  #1d6cb0;
-    --sky:   #3b9de0;
-    --bg:    #f0f4f9;
-    --white: #ffffff;
-    --text:  #0f172a;
-    --muted: #64748b;
-    --border:#cbd5e1;
-    --green: #22c55e;
-    --red:   #ef4444;
-    --amber: #f59e0b;
-    --radius:12px;
-    --sidebar: 240px;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    background: var(--bg); color: var(--text);
-    min-height: 100vh;
-  }
-
-  /* ══ LOGIN PAGE ══════════════════════════════════════════ */
-  #login-page {
-    min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    background: linear-gradient(135deg, var(--navy) 0%, #1e4a7a 100%);
-  }
-  .login-card {
-    background: white; border-radius: 16px;
-    padding: 48px 40px; width: 100%; max-width: 400px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-  }
-  .login-logo {
-    text-align: center; margin-bottom: 28px;
-  }
-  .login-logo .icon {
-    width: 64px; height: 64px; border-radius: 16px;
-    background: linear-gradient(135deg, var(--blue), var(--sky));
-    display: inline-flex; align-items: center; justify-content: center;
-    font-size: 28px; margin-bottom: 12px;
-  }
-  .login-logo h2 { font-size: 1.2rem; color: var(--navy); }
-  .login-logo p  { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
-
-  .login-field { margin-bottom: 18px; }
-  .login-field label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
-  .login-field input {
-    width: 100%; padding: 11px 14px; border: 1.5px solid var(--border);
-    border-radius: 8px; font-family: inherit; font-size: 0.9rem;
-    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .login-field input:focus { border-color: var(--sky); box-shadow: 0 0 0 3px rgba(59,157,224,0.15); }
-
-  .btn-login {
-    width: 100%; padding: 13px;
-    background: linear-gradient(135deg, var(--blue), var(--sky));
-    color: white; border: none; border-radius: 8px;
-    font-family: inherit; font-size: 0.95rem; font-weight: 600;
-    cursor: pointer; transition: opacity 0.2s;
-  }
-  .btn-login:hover { opacity: 0.9; }
-  .btn-login:disabled { opacity: 0.5; }
-
-  .login-err {
-    background: #fee2e2; border: 1px solid #fca5a5; color: #b91c1c;
-    border-radius: 8px; padding: 10px 14px; font-size: 0.84rem;
-    margin-bottom: 16px; display: none;
-  }
-  .login-err.show { display: block; }
-
-  /* ══ DASHBOARD PAGE ══════════════════════════════════════ */
-  #dashboard-page { display: none; }
-
-  /* Topbar */
-  .topbar {
-    background: var(--navy);
-    padding: 14px 24px;
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-  }
-  .topbar-left { display: flex; align-items: center; gap: 12px; }
-  .topbar-logo { font-size: 22px; }
-  .topbar-title { color: white; font-size: 0.95rem; font-weight: 700; }
-  .topbar-title span { display: block; font-size: 0.72rem; font-weight: 400; color: rgba(255,255,255,0.5); }
-  .topbar-right { display: flex; align-items: center; gap: 14px; }
-  .admin-badge {
-    color: rgba(255,255,255,0.7); font-size: 0.8rem;
-  }
-  .btn-logout {
-    padding: 7px 16px; border-radius: 6px;
-    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);
-    color: white; font-family: inherit; font-size: 0.8rem;
-    cursor: pointer; transition: background 0.2s;
-  }
-  .btn-logout:hover { background: rgba(255,255,255,0.2); }
-
-  /* Content */
-  .content { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
-
-  /* Stats */
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
-  @media(max-width:700px) { .stats-grid { grid-template-columns: 1fr 1fr; } }
-
-  .stat-card {
-    background: white; border-radius: var(--radius);
-    padding: 20px; box-shadow: 0 1px 8px rgba(15,42,74,0.07);
-    display: flex; align-items: center; gap: 16px;
-  }
-  .stat-icon {
-    width: 48px; height: 48px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center; font-size: 22px;
-    flex-shrink: 0;
-  }
-  .stat-icon.total    { background: #eff6ff; }
-  .stat-icon.tunggu   { background: #fefce8; }
-  .stat-icon.acc      { background: #f0fdf4; }
-  .stat-icon.tolak    { background: #fff1f2; }
-  .stat-num  { font-size: 1.8rem; font-weight: 700; color: var(--navy); line-height: 1; }
-  .stat-lbl  { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
-
-  /* Filters */
-  .filter-bar {
-    background: white; border-radius: var(--radius);
-    padding: 16px 20px; margin-bottom: 16px;
-    box-shadow: 0 1px 8px rgba(15,42,74,0.07);
-    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  }
-  .filter-bar span { font-size: 0.8rem; font-weight: 600; color: var(--navy); }
-  .filter-btn {
-    padding: 6px 16px; border-radius: 20px; border: 1.5px solid var(--border);
-    background: white; font-family: inherit; font-size: 0.8rem; cursor: pointer;
-    transition: all 0.15s; color: var(--text);
-  }
-  .filter-btn:hover { border-color: var(--sky); color: var(--blue); }
-  .filter-btn.active { background: var(--blue); border-color: var(--blue); color: white; }
-
-  /* Table */
-  .table-card {
-    background: white; border-radius: var(--radius);
-    box-shadow: 0 1px 8px rgba(15,42,74,0.07); overflow: hidden;
-  }
-  .table-header {
-    padding: 18px 24px; border-bottom: 1px solid #e8eef5;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .table-header h3 { font-size: 0.95rem; font-weight: 700; }
-  .table-header span { font-size: 0.78rem; color: var(--muted); }
-
-  .table-wrap { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; }
-  th {
-    text-align: left; padding: 12px 20px;
-    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.5px;
-    color: var(--muted); text-transform: uppercase;
-    background: #f8fafc; border-bottom: 1px solid #e8eef5;
-  }
-  td { padding: 16px 20px; border-bottom: 1px solid #f1f5f9; font-size: 0.87rem; vertical-align: top; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #f8fafc; }
-
-  .badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
-  }
-  .badge.menunggu  { background: #fefce8; color: #854d0e; border: 1px solid #fde68a; }
-  .badge.disetujui { background: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
-  .badge.ditolak   { background: #fff1f2; color: #b91c1c; border: 1px solid #fca5a5; }
-
-  .btn-acc, .btn-tolak {
-    padding: 6px 14px; border-radius: 6px; font-family: inherit;
-    font-size: 0.78rem; font-weight: 600; cursor: pointer; border: none;
-    transition: opacity 0.15s; margin-right: 6px;
-  }
-  .btn-acc  { background: #dcfce7; color: #15803d; }
-  .btn-acc:hover  { background: #bbf7d0; }
-  .btn-tolak { background: #fee2e2; color: #b91c1c; }
-  .btn-tolak:hover { background: #fecaca; }
-
-  .nama-col strong { display: block; margin-bottom: 2px; }
-  .nama-col small  { color: var(--muted); font-size: 0.78rem; }
-
-  .empty-state {
-    text-align: center; padding: 60px 20px; color: var(--muted);
-  }
-  .empty-state .icon { font-size: 2.5rem; margin-bottom: 12px; }
-  .loading-row td { text-align: center; padding: 40px; color: var(--muted); }
-
-  /* ══ MODAL ═══════════════════════════════════════════════ */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 200;
-    background: rgba(0,0,0,0.5);
-    display: none; align-items: center; justify-content: center; padding: 20px;
-  }
-  .modal-overlay.open { display: flex; }
-  .modal {
-    background: white; border-radius: 16px;
-    width: 100%; max-width: 480px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    overflow: hidden; animation: slideUp 0.25s ease;
-  }
-  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: none; opacity: 1; } }
-
-  .modal-head {
-    padding: 20px 24px; border-bottom: 1px solid #e8eef5;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .modal-head h3 { font-size: 1rem; }
-  .modal-close {
-    background: none; border: none; font-size: 1.3rem;
-    cursor: pointer; color: var(--muted); line-height: 1;
-    padding: 2px 6px; border-radius: 4px;
-  }
-  .modal-close:hover { background: #f1f5f9; }
-  .modal-body { padding: 24px; }
-
-  .modal-body label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
-  .modal-body textarea {
-    width: 100%; padding: 10px 12px; border: 1.5px solid var(--border);
-    border-radius: 8px; font-family: inherit; font-size: 0.88rem;
-    min-height: 90px; resize: vertical; outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-  .modal-body textarea:focus { border-color: var(--sky); box-shadow: 0 0 0 3px rgba(59,157,224,0.15); }
-
-  .modal-detail {
-    background: #f8fafc; border-radius: 8px;
-    padding: 14px; margin-bottom: 18px; font-size: 0.85rem;
-  }
-  .modal-detail p { margin-bottom: 6px; }
-  .modal-detail p:last-child { margin: 0; }
-  .modal-detail strong { color: var(--navy); }
-
-  .modal-foot { padding: 16px 24px; background: #f8fafc; display: flex; gap: 10px; justify-content: flex-end; }
-  .btn-cancel {
-    padding: 9px 20px; border-radius: 8px; border: 1px solid var(--border);
-    background: white; font-family: inherit; font-size: 0.88rem; cursor: pointer;
-  }
-  .btn-confirm {
-    padding: 9px 20px; border-radius: 8px; border: none;
-    font-family: inherit; font-size: 0.88rem; font-weight: 600; cursor: pointer;
-    transition: opacity 0.2s; color: white;
-  }
-  .btn-confirm.green { background: #16a34a; }
-  .btn-confirm.red   { background: #dc2626; }
-  .btn-confirm:hover { opacity: 0.85; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  @keyframes slideUp { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
+  .slide-up { animation: slideUp 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .fade-in { animation: fadeIn 0.2s ease; }
 </style>
 </head>
-<body>
+<body class="bg-slate-100 text-slate-900 min-h-screen">
 
-<!-- ══ LOGIN ═════════════════════════════════════════════ -->
-<div id="login-page">
-  <div class="login-card">
-    <div class="login-logo">
-      <div class="icon">🔐</div>
-      <h2>Kominfo Stan</h2>
-      <p>Portal Admin — Buku Tamu</p>
+<!-- LOGIN PAGE -->
+<div id="login-page" class="min-h-screen flex items-center justify-center bg-gradient-to-br from-navy to-[#1e4a7a] px-4">
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-10 fade-in">
+
+    <div class="text-center mb-8">
+      <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand to-brand-light inline-flex items-center justify-center shadow-lg mb-4">
+        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+        </svg>
+      </div>
+      <h2 class="text-xl font-bold text-navy">Kominfo Stan</h2>
+      <p class="text-slate-400 text-sm mt-1">Portal Admin — Buku Tamu</p>
     </div>
-    <div id="login-err" class="login-err"></div>
-    <div class="login-field">
-      <label>Username</label>
-      <input type="text" id="login-user" placeholder="Username admin" />
+
+    <div id="login-err" class="hidden bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm mb-5"></div>
+
+    <div class="space-y-4">
+      <div>
+        <label class="block text-xs font-bold text-navy mb-1.5 uppercase tracking-wide">Username</label>
+        <input id="login-user" type="text" placeholder="Username admin"
+          class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-all"/>
+      </div>
+      <div>
+        <label class="block text-xs font-bold text-navy mb-1.5 uppercase tracking-wide">Password</label>
+        <input id="login-pass" type="password" placeholder="••••••••"
+          class="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-all"
+          onkeydown="if(event.key==='Enter') doLogin()"/>
+      </div>
     </div>
-    <div class="login-field">
-      <label>Password</label>
-      <input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()"/>
-    </div>
-    <button class="btn-login" id="login-btn" onclick="doLogin()">Masuk</button>
+
+    <button id="login-btn" onclick="doLogin()"
+      class="w-full mt-6 py-3 bg-gradient-to-r from-brand to-brand-light text-white font-bold rounded-xl text-sm hover:opacity-90 active:scale-[.99] transition-all disabled:opacity-50">
+      Masuk
+    </button>
+
+    <p class="text-center text-xs text-slate-400 mt-6">
+      <a href="/" class="hover:text-brand transition-colors">Kembali ke Halaman Tamu</a>
+    </p>
   </div>
 </div>
 
-<!-- ══ DASHBOARD ══════════════════════════════════════════ -->
-<div id="dashboard-page">
+<!-- DASHBOARD PAGE -->
+<div id="dashboard-page" class="hidden">
 
-  <div class="topbar">
-    <div class="topbar-left">
-      <div class="topbar-logo">🏛️</div>
-      <div class="topbar-title">
-        Dashboard Admin
-        <span>Kominfo Stan — Sistem Buku Tamu</span>
+  <!-- Topbar -->
+  <div class="bg-navy sticky top-0 z-50 shadow-lg">
+    <div class="max-w-7xl mx-auto px-5 py-3.5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0">
+          <svg class="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+          </svg>
+        </div>
+        <div>
+          <p class="text-white font-bold text-sm leading-tight">Dashboard Admin</p>
+          <p class="text-white/40 text-xs">Kominfo Stan — Buku Tamu</p>
+        </div>
       </div>
-    </div>
-    <div class="topbar-right">
-      <span class="admin-badge">👤 <span id="admin-nama">Admin</span></span>
-      <button class="btn-logout" onclick="doLogout()">Keluar</button>
+      <div class="flex items-center gap-3">
+        <span class="text-white/50 text-xs hidden sm:block">Login sebagai: <span id="admin-nama" class="text-white font-semibold">Admin</span></span>
+        <button onclick="doLogout()"
+          class="px-4 py-1.5 rounded-lg bg-white/10 border border-white/15 text-white text-xs font-medium hover:bg-white/20 transition-all">
+          Keluar
+        </button>
+      </div>
     </div>
   </div>
 
-  <div class="content">
+  <!-- Content -->
+  <div class="max-w-7xl mx-auto px-4 py-8">
 
     <!-- Stats -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon total">📋</div>
-        <div><div class="stat-num" id="s-total">—</div><div class="stat-lbl">Total Permohonan</div></div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100">
+        <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">Total</p>
+        <p class="text-3xl font-bold text-navy" id="s-total">—</p>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon tunggu">⏳</div>
-        <div><div class="stat-num" id="s-tunggu">—</div><div class="stat-lbl">Menunggu</div></div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-amber-100">
+        <p class="text-xs font-semibold text-amber-500 uppercase tracking-wide mb-2">Menunggu</p>
+        <p class="text-3xl font-bold text-navy" id="s-tunggu">—</p>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon acc">✅</div>
-        <div><div class="stat-num" id="s-acc">—</div><div class="stat-lbl">Disetujui</div></div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-green-100">
+        <p class="text-xs font-semibold text-green-500 uppercase tracking-wide mb-2">Disetujui</p>
+        <p class="text-3xl font-bold text-navy" id="s-acc">—</p>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon tolak">❌</div>
-        <div><div class="stat-num" id="s-tolak">—</div><div class="stat-lbl">Ditolak</div></div>
+      <div class="bg-white rounded-2xl p-5 shadow-sm border border-red-100">
+        <p class="text-xs font-semibold text-red-400 uppercase tracking-wide mb-2">Ditolak</p>
+        <p class="text-3xl font-bold text-navy" id="s-tolak">—</p>
       </div>
     </div>
 
-    <!-- Filter -->
-    <div class="filter-bar">
-      <span>Filter:</span>
-      <button class="filter-btn active" onclick="setFilter('semua',this)">Semua</button>
-      <button class="filter-btn" onclick="setFilter('menunggu',this)">⏳ Menunggu</button>
-      <button class="filter-btn" onclick="setFilter('disetujui',this)">✅ Disetujui</button>
-      <button class="filter-btn" onclick="setFilter('ditolak',this)">❌ Ditolak</button>
-      <button class="filter-btn" style="margin-left:auto" onclick="loadData()">🔄 Refresh</button>
+    <!-- Filter Bar -->
+    <div class="bg-white rounded-2xl shadow-sm px-5 py-4 mb-4 flex items-center gap-2 flex-wrap">
+      <span class="text-xs font-bold text-slate-500 mr-1">Filter:</span>
+      <button class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border transition-all bg-brand text-white border-brand" onclick="setFilter('semua',this)">Semua</button>
+      <button class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-slate-200 text-slate-600 hover:border-brand hover:text-brand transition-all" onclick="setFilter('menunggu',this)">Menunggu</button>
+      <button class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-slate-200 text-slate-600 hover:border-brand hover:text-brand transition-all" onclick="setFilter('disetujui',this)">Disetujui</button>
+      <button class="filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-slate-200 text-slate-600 hover:border-brand hover:text-brand transition-all" onclick="setFilter('ditolak',this)">Ditolak</button>
+      <button onclick="loadData()" class="ml-auto px-4 py-1.5 rounded-full text-xs font-semibold border border-slate-200 text-slate-600 hover:border-brand hover:text-brand transition-all flex items-center gap-1.5">
+        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        Refresh
+      </button>
     </div>
 
-    <!-- Table -->
-    <div class="table-card">
-      <div class="table-header">
-        <h3>Daftar Permohonan Kunjungan</h3>
-        <span id="tbl-count">—</span>
+    <!-- Table Card -->
+    <div class="bg-white rounded-2xl shadow-sm overflow-hidden border border-slate-100">
+      <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+        <h3 class="font-bold text-sm text-navy">Daftar Permohonan Kunjungan</h3>
+        <span id="tbl-count" class="text-xs text-slate-400 bg-slate-100 px-3 py-1 rounded-full">—</span>
       </div>
-      <div class="table-wrap">
-        <table>
+      <div class="overflow-x-auto">
+        <table class="w-full">
           <thead>
-            <tr>
-              <th>#</th>
-              <th>Tamu</th>
-              <th>Ingin Bertemu</th>
-              <th>Keperluan</th>
-              <th>Jadwal</th>
-              <th>Status</th>
-              <th>Aksi</th>
+            <tr class="bg-slate-50 border-b border-slate-100">
+              <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wide">No</th>
+              <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wide">Tamu</th>
+              <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wide">Ingin Bertemu</th>
+              <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wide">Keperluan</th>
+              <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wide">Jadwal</th>
+              <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wide">Status</th>
+              <th class="text-left px-5 py-3 text-xs font-semibold text-slate-400 uppercase tracking-wide">Aksi</th>
             </tr>
           </thead>
           <tbody id="tbl-body">
-            <tr class="loading-row"><td colspan="7">⏳ Memuat data...</td></tr>
+            <tr><td colspan="7" class="text-center py-12 text-slate-400 text-sm">Memuat data...</td></tr>
           </tbody>
         </table>
       </div>
@@ -357,89 +162,115 @@
   </div>
 </div>
 
-<!-- ══ MODAL KONFIRMASI ═══════════════════════════════════ -->
-<div class="modal-overlay" id="modal">
-  <div class="modal">
-    <div class="modal-head">
-      <h3 id="modal-title">Konfirmasi</h3>
-      <button class="modal-close" onclick="closeModal()">✕</button>
+<!-- MODAL AKSI (Setujui / Tolak) -->
+<div id="modal" class="hidden fixed inset-0 z-[200] flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm fade-in">
+  <div class="bg-white rounded-2xl w-full max-w-md shadow-2xl slide-up overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+      <h3 id="modal-title" class="font-bold text-sm text-slate-900">Konfirmasi</h3>
+      <button onclick="closeModal()" class="text-slate-400 hover:text-slate-600 hover:bg-slate-100 w-8 h-8 rounded-lg flex items-center justify-center transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
     </div>
-    <div class="modal-body">
-      <div class="modal-detail" id="modal-detail"></div>
-      <label id="catatan-label">Catatan untuk Tamu <span style="color:#94a3b8">(opsional)</span></label>
-      <textarea id="modal-catatan" placeholder="Contoh: Silakan datang ke lantai 2..."></textarea>
+    <div class="p-6">
+      <div id="modal-detail" class="bg-slate-50 rounded-xl p-4 text-sm text-slate-600 mb-4 space-y-1.5"></div>
+      <label id="catatan-label" class="block text-xs font-bold text-navy uppercase tracking-wide mb-2">Catatan</label>
+      <textarea id="modal-catatan" rows="3"
+        class="w-full px-3 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand/30 focus:border-brand transition-all resize-none"></textarea>
     </div>
-    <div class="modal-foot">
-      <button class="btn-cancel" onclick="closeModal()">Batal</button>
-      <button class="btn-confirm" id="modal-confirm-btn" onclick="konfirmasi()">Konfirmasi</button>
+    <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex gap-3 justify-end">
+      <button onclick="closeModal()" class="px-5 py-2 rounded-xl border border-slate-200 text-sm font-medium hover:bg-slate-100 transition-all">Batal</button>
+      <button id="modal-confirm-btn" onclick="konfirmasi()" class="px-5 py-2 rounded-xl text-white text-sm font-bold transition-all hover:opacity-90 disabled:opacity-50">Konfirmasi</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL HAPUS -->
+<div id="modal-hapus" class="hidden fixed inset-0 z-[200] flex items-center justify-center px-4 bg-black/50 backdrop-blur-sm fade-in">
+  <div class="bg-white rounded-2xl w-full max-w-sm shadow-2xl slide-up overflow-hidden">
+    <div class="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+      <h3 class="font-bold text-sm text-slate-900">Hapus Data</h3>
+      <button onclick="closeHapus()" class="text-slate-400 hover:text-slate-600 hover:bg-slate-100 w-8 h-8 rounded-lg flex items-center justify-center transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="p-6">
+      <div class="flex items-start gap-4">
+        <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="font-semibold text-slate-800 text-sm">Yakin ingin menghapus data ini?</p>
+          <p class="text-slate-400 text-xs mt-1 leading-relaxed">Data permohonan atas nama <strong id="hapus-nama" class="text-slate-600"></strong> akan dihapus secara permanen dan tidak dapat dikembalikan.</p>
+        </div>
+      </div>
+    </div>
+    <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex gap-3 justify-end">
+      <button onclick="closeHapus()" class="px-5 py-2 rounded-xl border border-slate-200 text-sm font-medium hover:bg-slate-100 transition-all">Batal</button>
+      <button id="hapus-confirm-btn" onclick="eksekusiHapus()" class="px-5 py-2 rounded-xl bg-red-600 text-white text-sm font-bold hover:bg-red-700 transition-all disabled:opacity-50">Hapus</button>
     </div>
   </div>
 </div>
 
 <script>
-  let currentFilter  = 'semua';
-  let pendingId      = null;
-  let pendingAction  = null;
+  let currentFilter = 'semua';
+  let pendingId     = null;
+  let pendingAction = null;
+  let hapusId       = null;
 
-  // ── Login ────────────────────────────────────────────────
+  // LOGIN
   async function doLogin() {
     const btn  = document.getElementById('login-btn');
-    const err  = document.getElementById('login-err');
     const user = document.getElementById('login-user').value.trim();
     const pass = document.getElementById('login-pass').value;
 
-    if (!user || !pass) { showErr('Username dan password wajib diisi.'); return; }
-
+    if (!user || !pass) { showLoginErr('Username dan password wajib diisi.'); return; }
     btn.disabled = true; btn.textContent = 'Masuk...';
-    err.classList.remove('show');
 
     try {
       const res  = await fetch('/api/admin/login', {
-        method:'POST', headers:{'Content-Type':'application/json'},
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: user, password: pass })
       });
       const data = await res.json();
-
-      if (!res.ok) { showErr(data.error || 'Login gagal.'); }
-      else {
-        document.getElementById('admin-nama').textContent = data.nama;
-        document.getElementById('login-page').style.display    = 'none';
-        document.getElementById('dashboard-page').style.display = 'block';
-        loadData(); loadStats();
-      }
-    } catch { showErr('Gagal menghubungi server.'); }
+      if (!res.ok) showLoginErr(data.error || 'Login gagal.');
+      else showDashboard(data.nama);
+    } catch { showLoginErr('Gagal menghubungi server.'); }
     finally { btn.disabled = false; btn.textContent = 'Masuk'; }
   }
-  function showErr(msg) {
+
+  function showLoginErr(msg) {
     const el = document.getElementById('login-err');
-    el.textContent = '❌ ' + msg; el.classList.add('show');
+    el.textContent = msg;
+    el.classList.remove('hidden');
   }
 
-  // ── Logout ───────────────────────────────────────────────
+  function showDashboard(nama) {
+    document.getElementById('admin-nama').textContent = nama;
+    document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('dashboard-page').classList.remove('hidden');
+    loadData(); loadStats();
+  }
+
+  // Auto-check session
+  (async function() {
+    try {
+      const res = await fetch('/api/admin/me');
+      if (res.ok) { const d = await res.json(); showDashboard(d.nama); }
+    } catch {}
+  })();
+
+  // LOGOUT
   async function doLogout() {
     await fetch('/api/admin/logout', { method: 'POST' });
     location.reload();
   }
 
-  // ── Check session on load ────────────────────────────────
-  (async function() {
-    try {
-      const res = await fetch('/api/admin/me');
-      if (res.ok) {
-        const data = await res.json();
-        document.getElementById('admin-nama').textContent = data.nama;
-        document.getElementById('login-page').style.display    = 'none';
-        document.getElementById('dashboard-page').style.display = 'block';
-        loadData(); loadStats();
-      }
-    } catch {}
-  })();
-
-  // ── Stats ────────────────────────────────────────────────
+  // STATS
   async function loadStats() {
     try {
-      const res  = await fetch('/api/admin/stats');
-      const { data } = await res.json();
+      const { data } = await (await fetch('/api/admin/stats')).json();
       document.getElementById('s-total').textContent  = data.total;
       document.getElementById('s-tunggu').textContent = data.menunggu;
       document.getElementById('s-acc').textContent    = data.disetujui;
@@ -447,125 +278,169 @@
     } catch {}
   }
 
-  // ── Load table ───────────────────────────────────────────
+  // LOAD TABLE
   async function loadData() {
     const tbody = document.getElementById('tbl-body');
-    tbody.innerHTML = '<tr class="loading-row"><td colspan="7">⏳ Memuat data...</td></tr>';
+    tbody.innerHTML = `<tr><td colspan="7" class="text-center py-12 text-slate-400 text-sm">Memuat data...</td></tr>`;
 
     try {
-      const res  = await fetch('/api/admin/kunjungan?status=' + currentFilter);
-      const { data } = await res.json();
-
+      const { data } = await (await fetch('/api/admin/kunjungan?status=' + currentFilter)).json();
       document.getElementById('tbl-count').textContent = data.length + ' permohonan';
 
       if (!data.length) {
         tbody.innerHTML = `<tr><td colspan="7">
-          <div class="empty-state">
-            <div class="icon">📭</div>
-            <div>Belum ada permohonan untuk filter ini</div>
+          <div class="text-center py-16 text-slate-400">
+            <svg class="w-10 h-10 mx-auto mb-3 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            <p class="text-sm">Belum ada permohonan</p>
           </div></td></tr>`;
         return;
       }
 
       tbody.innerHTML = data.map(r => `
-        <tr>
-          <td style="color:var(--muted);font-size:0.78rem">#${r.id}</td>
-          <td>
-            <div class="nama-col">
-              <strong>${esc(r.nama_tamu)}</strong>
-              <small>${esc(r.email_tamu)}</small>
-              <small>📞 ${esc(r.no_hp)}</small>
-              ${r.instansi !== '-' ? `<small>🏢 ${esc(r.instansi)}</small>` : ''}
+        <tr class="border-b border-slate-50 hover:bg-slate-50/70 transition-colors">
+          <td class="px-5 py-4 text-xs text-slate-400 font-medium">${r.id}</td>
+          <td class="px-5 py-4">
+            <p class="font-semibold text-sm text-slate-900">${esc(r.nama_tamu)}</p>
+            <p class="text-xs text-slate-400 mt-0.5">${esc(r.email_tamu)}</p>
+            <p class="text-xs text-slate-400">${esc(r.no_hp)}</p>
+            ${r.instansi && r.instansi !== '-' ? `<p class="text-xs text-slate-400">${esc(r.instansi)}</p>` : ''}
+          </td>
+          <td class="px-5 py-4 text-sm text-slate-700 max-w-[160px]">${esc(r.tujuan_temu)}</td>
+          <td class="px-5 py-4 text-sm text-slate-500 max-w-[200px]">
+            ${esc(r.keperluan.length > 80 ? r.keperluan.substring(0, 80) + '…' : r.keperluan)}
+          </td>
+          <td class="px-5 py-4">
+            <p class="text-sm text-slate-700">${r.tgl_fmt}</p>
+            <p class="text-xs text-slate-400">${r.jam_kunjungan} WIB</p>
+            <p class="text-xs text-slate-300 mt-1">${r.dibuat}</p>
+          </td>
+          <td class="px-5 py-4">
+            ${r.status === 'menunggu'
+              ? '<span class="inline-flex px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">Menunggu</span>'
+              : r.status === 'disetujui'
+              ? '<span class="inline-flex px-2.5 py-1 rounded-full text-xs font-semibold bg-green-50 text-green-700 border border-green-200">Disetujui</span>'
+              : '<span class="inline-flex px-2.5 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 border border-red-200">Ditolak</span>'
+            }
+            ${r.catatan_admin ? `<p class="text-xs text-slate-400 mt-1.5 max-w-[140px] leading-relaxed">${esc(r.catatan_admin)}</p>` : ''}
+          </td>
+          <td class="px-5 py-4">
+            <div class="flex flex-col gap-1.5">
+              ${r.status === 'menunggu' ? `
+                <button onclick="openModal(${r.id},'disetujui','${esc(r.nama_tamu)}','${esc(r.tujuan_temu)}','${r.tgl_fmt}','${r.jam_kunjungan}')"
+                  class="px-3 py-1.5 rounded-lg bg-green-100 text-green-700 text-xs font-semibold hover:bg-green-200 transition-all text-left">
+                  Setujui
+                </button>
+                <button onclick="openModal(${r.id},'ditolak','${esc(r.nama_tamu)}','${esc(r.tujuan_temu)}','${r.tgl_fmt}','${r.jam_kunjungan}')"
+                  class="px-3 py-1.5 rounded-lg bg-amber-100 text-amber-700 text-xs font-semibold hover:bg-amber-200 transition-all text-left">
+                  Tolak
+                </button>
+              ` : `
+                <span class="text-xs text-slate-300">Sudah diproses</span>
+              `}
+              <button onclick="openHapus(${r.id}, '${esc(r.nama_tamu)}')"
+                class="px-3 py-1.5 rounded-lg bg-red-50 text-red-500 text-xs font-semibold hover:bg-red-100 transition-all text-left">
+                Hapus
+              </button>
             </div>
           </td>
-          <td>${esc(r.tujuan_temu)}</td>
-          <td style="max-width:200px;white-space:normal">${esc(r.keperluan.length > 80 ? r.keperluan.substring(0,80)+'...' : r.keperluan)}</td>
-          <td>
-            <div style="font-size:0.82rem">📅 ${r.tgl_fmt}</div>
-            <div style="font-size:0.82rem;color:var(--muted)">🕐 ${r.jam_kunjungan}</div>
-            <div style="font-size:0.72rem;color:var(--muted);margin-top:4px">Dikirim: ${r.dibuat}</div>
-          </td>
-          <td>
-            <span class="badge ${r.status}">${
-              r.status === 'menunggu'  ? '⏳ Menunggu'  :
-              r.status === 'disetujui' ? '✅ Disetujui' : '❌ Ditolak'
-            }</span>
-            ${r.catatan_admin ? `<div style="font-size:0.75rem;color:var(--muted);margin-top:4px;max-width:140px">${esc(r.catatan_admin)}</div>` : ''}
-          </td>
-          <td>
-            ${r.status === 'menunggu' ? `
-              <button class="btn-acc"   onclick="openModal(${r.id},'disetujui','${esc(r.nama_tamu)}','${esc(r.tujuan_temu)}','${r.tgl_fmt}','${r.jam_kunjungan}')">✅ Setujui</button>
-              <button class="btn-tolak" onclick="openModal(${r.id},'ditolak','${esc(r.nama_tamu)}','${esc(r.tujuan_temu)}','${r.tgl_fmt}','${r.jam_kunjungan}')">❌ Tolak</button>
-            ` : '<span style="font-size:0.78rem;color:var(--muted)">Sudah diproses</span>'}
-          </td>
         </tr>`).join('');
-    } catch { tbody.innerHTML = '<tr class="loading-row"><td colspan="7">❌ Gagal memuat data.</td></tr>'; }
+    } catch {
+      tbody.innerHTML = `<tr><td colspan="7" class="text-center py-12 text-red-400 text-sm">Gagal memuat data. Coba refresh.</td></tr>`;
+    }
   }
 
-  // ── Filter ───────────────────────────────────────────────
+  // FILTER
   function setFilter(f, el) {
     currentFilter = f;
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    el.classList.add('active');
+    document.querySelectorAll('.filter-btn').forEach(b => {
+      b.className = 'filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border border-slate-200 text-slate-600 hover:border-brand hover:text-brand transition-all';
+    });
+    el.className = 'filter-btn px-4 py-1.5 rounded-full text-xs font-semibold border transition-all bg-brand text-white border-brand';
     loadData();
   }
 
-  // ── Modal ────────────────────────────────────────────────
+  // MODAL SETUJUI / TOLAK
   function openModal(id, action, nama, tujuan, tgl, jam) {
     pendingId     = id;
     pendingAction = action;
+    const isAcc   = action === 'disetujui';
 
-    const isAcc = action === 'disetujui';
-    document.getElementById('modal-title').textContent = isAcc ? '✅ Setujui Permohonan' : '❌ Tolak Permohonan';
+    document.getElementById('modal-title').textContent = isAcc ? 'Setujui Permohonan' : 'Tolak Permohonan';
     document.getElementById('modal-detail').innerHTML = `
-      <p><strong>Tamu:</strong> ${esc(nama)}</p>
-      <p><strong>Tujuan bertemu:</strong> ${esc(tujuan)}</p>
-      <p><strong>Jadwal:</strong> ${tgl}, pukul ${jam}</p>`;
-    document.getElementById('catatan-label').innerHTML =
-      isAcc ? 'Catatan untuk Tamu <span style="color:#94a3b8">(opsional)</span>'
-            : 'Alasan Penolakan <span style="color:#94a3b8">(opsional)</span>';
-    document.getElementById('modal-catatan').value = '';
-    document.getElementById('modal-catatan').placeholder =
-      isAcc ? 'Contoh: Silakan menuju lantai 2, hubungi resepsionis terlebih dahulu.'
-            : 'Contoh: Pejabat yang dituju sedang tidak ada di tempat.';
+      <p><span class="text-slate-400">Tamu:</span> <strong class="text-slate-800">${esc(nama)}</strong></p>
+      <p><span class="text-slate-400">Ingin bertemu:</span> <strong class="text-slate-800">${esc(tujuan)}</strong></p>
+      <p><span class="text-slate-400">Jadwal:</span> <strong class="text-slate-800">${tgl}, pukul ${jam}</strong></p>`;
 
-    const confirmBtn = document.getElementById('modal-confirm-btn');
-    confirmBtn.textContent  = isAcc ? 'Ya, Setujui' : 'Ya, Tolak';
-    confirmBtn.className    = 'btn-confirm ' + (isAcc ? 'green' : 'red');
-    document.getElementById('modal').classList.add('open');
+    document.getElementById('catatan-label').innerHTML = isAcc
+      ? 'Catatan untuk Tamu <span class="text-slate-300 font-normal normal-case">(opsional)</span>'
+      : 'Alasan Penolakan <span class="text-slate-300 font-normal normal-case">(opsional)</span>';
+
+    document.getElementById('modal-catatan').value = '';
+    document.getElementById('modal-catatan').placeholder = isAcc
+      ? 'Contoh: Silakan menuju lantai 2, hubungi resepsionis terlebih dahulu.'
+      : 'Contoh: Pejabat yang dituju sedang tidak ada di tempat.';
+
+    const btn = document.getElementById('modal-confirm-btn');
+    btn.textContent = isAcc ? 'Ya, Setujui' : 'Ya, Tolak';
+    btn.className = `px-5 py-2 rounded-xl text-white text-sm font-bold transition-all hover:opacity-90 disabled:opacity-50 ${isAcc ? 'bg-green-600' : 'bg-red-600'}`;
+
+    document.getElementById('modal').classList.remove('hidden');
   }
 
   function closeModal() {
-    document.getElementById('modal').classList.remove('open');
+    document.getElementById('modal').classList.add('hidden');
     pendingId = pendingAction = null;
   }
 
   async function konfirmasi() {
     const catatan = document.getElementById('modal-catatan').value.trim();
-    const btn = document.getElementById('modal-confirm-btn');
-    btn.disabled = true; btn.textContent = 'Memproses...';
+    const btn     = document.getElementById('modal-confirm-btn');
+    btn.disabled  = true; btn.textContent = 'Memproses...';
 
     try {
-      const res = await fetch('/api/admin/kunjungan/' + pendingId, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+      const res  = await fetch('/api/admin/kunjungan/' + pendingId, {
+        method: 'PATCH', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: pendingAction, catatan_admin: catatan })
       });
       const data = await res.json();
-      if (!res.ok) alert('❌ ' + data.error);
-      else {
-        closeModal();
-        loadData(); loadStats();
-      }
+      if (!res.ok) alert(data.error || 'Gagal memproses.');
+      else { closeModal(); loadData(); loadStats(); }
     } catch { alert('Gagal menghubungi server.'); }
     finally { btn.disabled = false; }
   }
 
+  // MODAL HAPUS
+  function openHapus(id, nama) {
+    hapusId = id;
+    document.getElementById('hapus-nama').textContent = nama;
+    document.getElementById('modal-hapus').classList.remove('hidden');
+  }
+
+  function closeHapus() {
+    document.getElementById('modal-hapus').classList.add('hidden');
+    hapusId = null;
+  }
+
+  async function eksekusiHapus() {
+    const btn    = document.getElementById('hapus-confirm-btn');
+    btn.disabled = true; btn.textContent = 'Menghapus...';
+
+    try {
+      const res  = await fetch('/api/admin/kunjungan/' + hapusId, { method: 'DELETE' });
+      const data = await res.json();
+      if (!res.ok) alert(data.error || 'Gagal menghapus.');
+      else { closeHapus(); loadData(); loadStats(); }
+    } catch { alert('Gagal menghubungi server.'); }
+    finally { btn.disabled = false; btn.textContent = 'Hapus'; }
+  }
+
+  // UTILS
   function esc(str) {
     return String(str || '')
       .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-      .replace(/>/g,'&gt;').replace(/"/g,'&quot;')
-      .replace(/'/g,'&#39;');
+      .replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
   }
 </script>
 </body>
