@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>Login Admin — Kominfo Stan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = { theme: { extend: { colors: { navy: '#0f2a4a', brand: '#1d6cb0' } } } }
+    </script>
+</head>
+
+<body
+    class="bg-gradient-to-br from-navy to-[#1e4a7a] min-h-screen flex items-center justify-center px-4 font-['Plus+Jakarta+Sans']">
+
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-10 animate-[fadeIn_0.3s_ease-out]">
+        <div class="text-center mb-8">
+            <div
+                class="relative w-24 h-24 mx-auto bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl flex items-center justify-center overflow-hidden shadow-2xl transform transition-all group-hover:scale-110 duration-500">
+                <img src="../logo.png" alt="Logo" class="w-20 h-20 object-contain" />
+            </div>
+            <h2 class="text-2xl font-bold text-navy mt-4">Kominfo Stan</h2>
+            <p class="text-slate-400 text-sm mt-1">Portal Manajemen Kunjungan</p>
+        </div>
+        <div id="err-msg"
+            class="hidden bg-red-50 border border-red-100 text-red-600 rounded-xl px-4 py-3 text-xs mb-6 text-center">
+        </div>
+
+        <div class="space-y-4">
+            <div>
+                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-[2px] mb-2">Username</label>
+                <input id="user" type="text"
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-sm focus:ring-2 focus:ring-brand/20 outline-none transition-all"
+                    placeholder="Admin username">
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-[2px] mb-2">Password</label>
+                <input id="pass" type="password"
+                    class="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-sm focus:ring-2 focus:ring-brand/20 outline-none transition-all"
+                    placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
+            </div>
+        </div>
+
+        <button id="btn" onclick="doLogin()"
+            class="w-full mt-8 py-4 bg-brand text-white font-bold rounded-xl text-sm hover:shadow-lg hover:shadow-brand/30 active:scale-[0.98] transition-all">Masuk
+            Sekarang</button>
+
+        <a href="/" class="block text-center text-xs text-slate-400 mt-6 hover:text-brand transition-colors">Kembali ke
+            Halaman Tamu</a>
+    </div>
+
+    <script>
+        async function doLogin() {
+            const btn = document.getElementById('btn');
+            const u = document.getElementById('user').value.trim();
+            const p = document.getElementById('pass').value;
+            const err = document.getElementById('err-msg');
+
+            if (!u || !p) { err.textContent = "Data tidak lengkap"; err.classList.remove('hidden'); return; }
+
+            btn.disabled = true; btn.textContent = 'Memverifikasi...';
+            try {
+                const res = await fetch('/api/admin/login', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: u, password: p })
+                });
+                if (res.ok) { location.href = '/admin'; } // Pindah ke dashboard
+                else { const d = await res.json(); err.textContent = d.error; err.classList.remove('hidden'); }
+            } catch { err.textContent = "Gagal terhubung ke server"; err.classList.remove('hidden'); }
+            finally { btn.disabled = false; btn.textContent = 'Masuk Sekarang'; }
+        }
+    </script>
+</body>
+
+</html>

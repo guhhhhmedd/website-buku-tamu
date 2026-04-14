@@ -1,71 +1,125 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>Buku Tamu — Kominfo Stan</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+    rel="stylesheet" />
+
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            cream: '#f5f0e8',
-            paper: '#faf7f2',
-            ink: '#1a1410',
-            gold: '#b8860b',
-            rust: '#8b3a2a',
+            ink: '#042f5e',
+            deep: '#031f3e',
+            gold: '#94a3b8',
+            rust: '#38bdf8'
           },
-          fontFamily: {
-            serif: ['Playfair Display', 'serif'],
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          animation: {
+            'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+            'slide-down': 'slideDown 0.6s ease-out forwards',
+            'gradient-x': 'gradientX 3s ease infinite',
+            'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          },
+          keyframes: {
+            fadeInUp: {
+              '0%': { opacity: '0', transform: 'translateY(20px)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            slideDown: {
+              '0%': { opacity: '0', transform: 'translateY(-100%)' },
+              '100%': { opacity: '1', transform: 'translateY(0)' },
+            },
+            gradientX: {
+              '0%, 100%': { 'background-position': '0% 50%' },
+              '50%': { 'background-position': '100% 50%' },
+            }
           }
         }
       }
     }
   </script>
 </head>
+
 <body class="bg-cream font-sans text-ink min-h-screen pb-12">
 
-  <header class="bg-ink text-cream relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-ink via-[#2a221a] to-ink opacity-90"></div>
-    <div class="max-w-4xl mx-auto px-6 py-10 relative z-10 flex items-center gap-5">
-      <div class="w-16 h-16 bg-gold/20 border-2 border-gold/40 rounded-2xl flex items-center justify-center text-3xl shadow-lg">🏛️</div>
-      <div>
-        <h1 class="font-serif text-3xl font-bold tracking-tight">Kominfo <span class="italic text-gold">Stan</span></h1>
-        <p class="text-gold/60 text-xs uppercase tracking-[3px] mt-1 font-medium">Sistem Manajemen Kunjungan Tamu</p>
+  <header class="bg-ink text-white relative overflow-hidden shadow-2xl animate-slide-down">
+    <div
+      class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-rust/10 rounded-full blur-[120px] animate-pulse-slow">
+    </div>
+    <div class="absolute inset-0 bg-gradient-to-b from-deep via-ink to-deep opacity-95"></div>
+
+    <div class="max-w-4xl mx-auto px-6 py-16 relative z-10 flex flex-col items-center text-center gap-8">
+      <div class="relative group">
+        <div
+          class="absolute -inset-2 bg-gradient-to-r from-rust to-blue-400 rounded-3xl blur opacity-20 group-hover:opacity-40 transition duration-1000">
+        </div>
+        <div
+          class="relative w-24 h-24 bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl flex items-center justify-center overflow-hidden shadow-2xl transform transition-all group-hover:scale-110 duration-500">
+          <img src="./logo.png" alt="Logo" class="w-30 h-30 object-contain rounded-2xl" />
+        </div>
+      </div>
+
+      <div class="space-y-4">
+        <h1 class="font-serif text-5xl md:text-6xl font-bold tracking-tight">
+          Kominfo<span class="italic text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-white">Stan</span>
+        </h1>
+        <div class="flex items-center justify-center gap-4">
+          <div class="h-[1px] w-12 bg-gradient-to-r from-transparent to-rust/50"></div>
+          <p class="text-rust/80 text-[11px] md:text-xs uppercase tracking-[6px] font-bold">Sistem Manajemen Kunjungan
+            Tamu</p>
+          <div class="h-[1px] w-12 bg-gradient-to-l from-transparent to-rust/50"></div>
+        </div>
       </div>
     </div>
 
-    <div class="bg-black/20 backdrop-blur-sm py-4 relative z-10 border-t border-white/5">
-      <div class="max-w-4xl mx-auto px-6 flex items-center justify-between">
-        <div class="flex items-center gap-3" id="step1">
-          <div class="w-8 h-8 rounded-full bg-gold text-ink flex items-center justify-center font-bold text-sm shadow-md transition-all">1</div>
-          <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-gold">Isi Formulir</span>
+    <div class="bg-black/20 backdrop-blur-md py-6 relative z-10 border-t border-white/5">
+      <div class="max-w-2xl mx-auto px-6 flex items-center justify-between">
+
+        <div class="flex flex-col items-center gap-2" id="step1">
+          <div
+            class="w-10 h-10 rounded-full bg-rust text-deep flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(56,189,248,0.4)] transition-all">
+            1</div>
+          <span class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-rust">Isi Formulir</span>
         </div>
-        <div class="h-[1px] flex-1 bg-gold/20 mx-4 max-w-[60px]"></div>
-        <div class="flex items-center gap-3 opacity-40" id="step2">
-          <div class="w-8 h-8 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center font-bold text-sm transition-all">2</div>
-          <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white">Persetujuan</span>
+
+        <div class="h-[1px] flex-1 bg-white/10 mx-4"></div>
+
+        <div class="flex flex-col items-center gap-2 opacity-40" id="step2">
+          <div
+            class="w-10 h-10 rounded-full bg-white/5 border border-white/20 text-white flex items-center justify-center font-bold text-sm transition-all">
+            2</div>
+          <span class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-white">Persetujuan</span>
         </div>
-        <div class="h-[1px] flex-1 bg-gold/20 mx-4 max-w-[60px]"></div>
-        <div class="flex items-center gap-3 opacity-40" id="step3">
-          <div class="w-8 h-8 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center font-bold text-sm transition-all">3</div>
-          <span class="text-[10px] md:text-xs font-bold uppercase tracking-widest text-white">Konfirmasi</span>
+
+        <div class="h-[1px] flex-1 bg-white/10 mx-4"></div>
+
+        <div class="flex flex-col items-center gap-2 opacity-40" id="step3">
+          <div
+            class="w-10 h-10 rounded-full bg-white/5 border border-white/20 text-white flex items-center justify-center font-bold text-sm transition-all">
+            3</div>
+          <span class="text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-white">Konfirmasi</span>
         </div>
+
       </div>
     </div>
   </header>
 
-  <div class="max-w-4xl mx-auto px-4 mt-10">
-    <div class="bg-paper border border-gold/15 rounded-2xl shadow-xl overflow-hidden relative">
-      <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-gold via-rust to-gold"></div>
+  <div class="max-w-4xl mx-auto px-4 mt-10 mb-20 animate-fade-in-up">
+    <div
+      class="bg-paper border border-gold/15 rounded-2xl shadow-[0_20px_50px_rgba(26,20,16,0.1)] hover:shadow-[0_30px_60px_rgba(184,134,11,0.15)] transition-all duration-500 overflow-hidden relative group">
 
-      <div id="form-view">
-        <div class="p-8 border-b border-gold/10 flex items-center gap-4">
-          <div class="w-12 h-12 bg-gold/10 text-gold rounded-xl flex items-center justify-center text-2xl shadow-inner">📋</div>
+      <div
+        class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-gold via-rust to-gold bg-[length:200%_auto] animate-gradient-x">
+      </div>
+
+      <div id="form-view" class="transition-opacity duration-500">
+        <div class="p-8 border-b border-gold/10 flex items-center gap-4 bg-white/30">
           <div>
             <h2 class="font-serif text-xl font-bold text-ink">Formulir Permohonan Kunjungan</h2>
             <p class="text-ink-light/60 text-sm">Silakan lengkapi data permohonan kunjungan Anda</p>
@@ -73,76 +127,129 @@
         </div>
 
         <div class="p-8">
-          <div class="bg-gold/5 border border-gold/10 rounded-xl p-4 mb-8 flex gap-3 text-sm text-ink-light">
-            <span class="text-gold text-lg">ℹ️</span>
-            <p>Permohonan kunjungan akan diproses oleh admin. Anda akan mendapat notifikasi melalui email mengenai status persetujuan.</p>
+          <div
+            class="bg-gold/5 border border-gold/10 rounded-xl p-4 mb-8 flex gap-3 text-sm text-ink-light hover:bg-gold/10 transition-colors">
+            <p>Permohonan kunjungan akan diproses oleh admin. Anda akan mendapat notifikasi melalui email mengenai
+              status persetujuan.</p>
           </div>
 
-          <div id="alert" class="hidden mb-6 p-4 rounded-xl text-sm font-medium border transition-all"></div>
+          <div id="alert" class="hidden mb-6 p-4 rounded-xl text-sm font-medium border transition-all duration-300">
+          </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="space-y-1.5">
-              <label class="text-[11px] font-bold uppercase tracking-widest text-gold">Nama Lengkap <span class="text-rust">*</span></label>
-              <input type="text" id="nama_tamu" class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all placeholder:text-gray-300" placeholder="Nama lengkap Anda">
+            <div
+              class="space-y-1.5 group/input transform transition-transform duration-300 focus-within:-translate-y-1">
+              <label
+                class="text-[11px] font-bold uppercase tracking-widest text-gold group-focus-within/input:text-rust transition-colors">Nama
+                Lengkap </label>
+              <input type="text" id="nama_tamu"
+                class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all shadow-sm hover:shadow-md"
+                placeholder="Nama lengkap Anda">
             </div>
 
-            <div class="space-y-1.5">
-              <label class="text-[11px] font-bold uppercase tracking-widest text-gold">Alamat Email <span class="text-rust">*</span></label>
-              <input type="email" id="email_tamu" class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all placeholder:text-gray-300" placeholder="email@contoh.com">
+            <div
+              class="space-y-1.5 group/input transform transition-transform duration-300 focus-within:-translate-y-1">
+              <label
+                class="text-[11px] font-bold uppercase tracking-widest text-gold group-focus-within/input:text-rust transition-colors">Alamat
+                Email </label>
+              <input type="email" id="email_tamu"
+                class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all shadow-sm hover:shadow-md"
+                placeholder="email@contoh.com">
             </div>
 
-            <div class="space-y-1.5">
-              <label class="text-[11px] font-bold uppercase tracking-widest text-gold">No. HP / WhatsApp <span class="text-rust">*</span></label>
-              <input type="tel" id="no_hp" class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all placeholder:text-gray-300" placeholder="08xxxxxxxxxx">
+            <div
+              class="space-y-1.5 group/input transform transition-transform duration-300 focus-within:-translate-y-1">
+              <label
+                class="text-[11px] font-bold uppercase tracking-widest text-gold group-focus-within/input:text-rust transition-colors">No.
+                HP / WhatsApp </label>
+              <input type="tel" id="no_hp"
+                class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all shadow-sm hover:shadow-md"
+                placeholder="08xxxxxxxxxx">
             </div>
 
-            <div class="space-y-1.5">
-              <label class="text-[11px] font-bold uppercase tracking-widest text-gold">Asal Instansi</label>
-              <input type="text" id="instansi" class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all placeholder:text-gray-300" placeholder="Kosongkan jika perorangan">
+            <div
+              class="space-y-1.5 group/input transform transition-transform duration-300 focus-within:-translate-y-1">
+              <label
+                class="text-[11px] font-bold uppercase tracking-widest text-gold group-focus-within/input:text-rust transition-colors">Asal
+                Instansi</label>
+              <input type="text" id="instansi"
+                class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all shadow-sm hover:shadow-md"
+                placeholder="Kosongkan jika perorangan">
             </div>
 
-            <div class="space-y-1.5 md:col-span-2">
-              <label class="text-[11px] font-bold uppercase tracking-widest text-gold">Ingin Bertemu Dengan <span class="text-rust">*</span></label>
-              <input type="text" id="tujuan_temu" class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all placeholder:text-gray-300" placeholder="Contoh: Kepala Dinas, Bidang Infrastruktur, dll.">
+            <div
+              class="space-y-1.5 md:col-span-2 group/input transform transition-transform duration-300 focus-within:-translate-y-1">
+              <label
+                class="text-[11px] font-bold uppercase tracking-widest text-gold group-focus-within/input:text-rust transition-colors">Ingin
+                Bertemu Dengan Bidang </label>
+              <select id="tujuan_temu"
+                class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all shadow-sm cursor-pointer hover:shadow-md">
+                <option value="" disabled selected>Pilih Pejabat/Bidang...</option>
+                <option value="Lembaga Pelayanan Berbasis Elektronik">Lembaga Pelayanan Berbasis Elektronik</option>
+                <option value="Statistika">Statistika</option>
+                <option value="Bidang Persandian">Persandian</option>
+                <option value="Bidang Informasi Komunikasi">Bidang Informasi Komunikasi</option>
+                <option value="Bidang Radio">Bidang Radio</option>
+              </select>
             </div>
 
-            <div class="space-y-1.5 md:col-span-2">
-              <label class="text-[11px] font-bold uppercase tracking-widest text-gold">Keperluan Kunjungan <span class="text-rust">*</span></label>
-              <textarea id="keperluan" rows="3" class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all placeholder:text-gray-300" placeholder="Jelaskan secara singkat tujuan kunjungan Anda..."></textarea>
+            <div
+              class="space-y-1.5 md:col-span-2 group/input transform transition-transform duration-300 focus-within:-translate-y-1">
+              <label
+                class="text-[11px] font-bold uppercase tracking-widest text-gold group-focus-within/input:text-rust transition-colors">Keperluan
+                Kunjungan </label>
+              <textarea id="keperluan" rows="3"
+                class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all shadow-sm hover:shadow-md"
+                placeholder="Jelaskan secara singkat tujuan kunjungan Anda..."></textarea>
             </div>
 
-            <div class="space-y-1.5">
-              <label class="text-[11px] font-bold uppercase tracking-widest text-gold">Tanggal Kunjungan <span class="text-rust">*</span></label>
-              <input type="date" id="tgl_kunjungan" class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all">
+            <div
+              class="space-y-1.5 group/input transform transition-transform duration-300 focus-within:-translate-y-1">
+              <label
+                class="text-[11px] font-bold uppercase tracking-widest text-gold group-focus-within/input:text-rust transition-colors">Tanggal
+                Kunjungan </label>
+              <input type="date" id="tgl_kunjungan"
+                class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all shadow-sm hover:shadow-md">
             </div>
 
-            <div class="space-y-1.5">
-              <label class="text-[11px] font-bold uppercase tracking-widest text-gold">Jam Kunjungan <span class="text-rust">*</span></label>
-              <input type="time" id="jam_kunjungan" class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-2 focus:ring-gold/20 focus:border-gold outline-none transition-all">
+            <div
+              class="space-y-1.5 group/input transform transition-transform duration-300 focus-within:-translate-y-1">
+              <label
+                class="text-[11px] font-bold uppercase tracking-widest text-gold group-focus-within/input:text-rust transition-colors">Jam
+                Kunjungan </label>
+              <select id="jam_kunjungan"
+                class="w-full px-4 py-3 bg-white border border-gold/20 rounded-xl focus:ring-4 focus:ring-gold/10 focus:border-gold outline-none transition-all shadow-sm cursor-pointer hover:shadow-md">
+                <option value="" disabled selected>Pilih Jam...</option>
+                <option value="10:00">Pukul 10:00 WIB</option>
+                <option value="14:00">Pukul 14:00 WIB</option>
+              </select>
             </div>
           </div>
 
-          <button id="submit-btn" onclick="kirimPermohonan()" class="w-full mt-10 py-4 bg-ink text-cream font-bold rounded-xl shadow-xl hover:bg-gold transition-all flex items-center justify-center gap-3 active:scale-[0.98] uppercase tracking-[3px] text-xs">
-            <span>📤</span> Kirim Permohonan
+          <button id="submit-btn" onclick="kirimPermohonan()"
+            class="w-full mt-10 py-4 bg-ink text-white font-bold rounded-xl shadow-[0_10px_20px_rgba(26,20,16,0.2)] hover:shadow-[0_15px_25px_rgba(184,134,11,0.3)] hover:bg-gold hover:-translate-y-1 active:scale-[0.95] transition-all duration-300 flex items-center justify-center gap-3 uppercase tracking-[3px] text-xs">
+            Kirim Permohonan
           </button>
         </div>
       </div>
-
-      <div id="success-screen" class="hidden p-16 text-center">
-        <div class="w-20 h-20 bg-gold/10 text-gold rounded-full flex items-center justify-center text-4xl mx-auto mb-6 shadow-inner">✅</div>
-        <h2 class="font-serif text-2xl font-bold text-ink mb-3">Permohonan Berhasil Dikirim!</h2>
-        <p class="text-ink-light/70 mb-8 max-w-sm mx-auto text-sm leading-relaxed">Terima kasih. Permohonan Anda sedang menunggu konfirmasi admin Kominfo Stan.</p>
-        <div class="bg-cream border border-gold/20 rounded-2xl p-6 inline-block shadow-sm">
-          <p class="text-[10px] uppercase tracking-widest text-gold mb-1 font-bold">No. Referensi</p>
-          <strong id="ref-id" class="text-3xl font-serif text-rust italic">#—</strong>
-        </div>
-      </div>
-
     </div>
 
+
+
+    <div id="success-screen" class="hidden p-16 text-center">
+      <h2 class="font-serif text-2xl font-bold text-ink mb-3">Permohonan Berhasil Dikirim!</h2>
+      <p class="text-ink-light/70 mb-8 max-w-sm mx-auto text-sm leading-relaxed">Terima kasih. Permohonan Anda sedang
+        menunggu konfirmasi admin Kominfo Stan.</p>
+    </div>
+
+
     <p class="text-center mt-10 text-[10px] text-gold/60 uppercase tracking-[4px] font-bold">
-      Kominfo Stan &nbsp;•&nbsp; <a href="/admin" class="hover:text-gold transition-all underline underline-offset-4">Login Admin</a>
+      Kominfo Stan &nbsp;•&nbsp;
+      <a href="/admin/login" class="hover:text-gold transition-all underline underline-offset-4">
+        Login Admin
+      </a>
     </p>
+
   </div>
 
   <script>
@@ -167,7 +274,7 @@
 
       const required = ['nama_tamu', 'email_tamu', 'no_hp', 'tujuan_temu', 'keperluan', 'tgl_kunjungan', 'jam_kunjungan'];
       for (const k of required) {
-        if (!body[k]) { showAlert('error', '⚠️ Semua kolom bertanda * wajib diisi.'); return; }
+        if (!body[k]) { showAlert('error', ' Semua kolom bertanda wajib diisi.'); return; }
       }
 
       btn.disabled = true;
@@ -179,17 +286,16 @@
         });
         const data = await res.json();
 
-        if (!res.ok) { showAlert('error', '❌ ' + (data.error || 'Terjadi kesalahan.')); }
+        if (!res.ok) { showAlert('error', + (data.error || 'Terjadi kesalahan.')); }
         else {
           document.getElementById('form-view').classList.add('hidden');
           document.getElementById('success-screen').classList.remove('hidden');
-          document.getElementById('ref-id').textContent = '#' + data.id;
-          
-          // Update Steps UI
+
+          // Update Steps kalo gagal/berhasil
           updateStep(1, 'done');
           updateStep(2, 'active');
         }
-      } catch (e) { showAlert('error', '❌ Gagal menghubungi server.'); }
+      } catch (e) { showAlert('error', ' Gagal menghubungi server.'); }
       finally { btn.disabled = false; btn.innerHTML = '<span>📤</span> Kirim Permohonan'; }
     }
 
@@ -197,16 +303,16 @@
       const step = document.getElementById('step' + num);
       const circle = step.querySelector('div');
       const text = step.querySelector('span');
-      
-      if(status === 'done') {
+
+      if (status === 'done') {
         step.classList.remove('opacity-40');
-        circle.className = "w-8 h-8 rounded-full bg-rust text-white flex items-center justify-center font-bold text-sm shadow-md transition-all";
+        circle.className = "w-10 h-10 rounded-full bg-rust text-deep flex items-center justify-center font-bold text-sm shadow-md transition-all";
         circle.innerHTML = "✓";
-        text.className = "text-[10px] md:text-xs font-bold uppercase tracking-widest text-rust";
-      } else if(status === 'active') {
+        text.className = "text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-rust";
+      } else if (status === 'active') {
         step.classList.remove('opacity-40');
-        circle.className = "w-8 h-8 rounded-full bg-gold text-ink flex items-center justify-center font-bold text-sm shadow-md transition-all";
-        text.className = "text-[10px] md:text-xs font-bold uppercase tracking-widest text-gold";
+        circle.className = "w-10 h-10 rounded-full bg-rust text-deep flex items-center justify-center font-bold text-sm shadow-[0_0_20px_rgba(56,189,248,0.5)] transition-all";
+        text.className = "text-[9px] md:text-[10px] font-bold uppercase tracking-widest text-rust";
       }
     }
 
@@ -218,4 +324,5 @@
     }
   </script>
 </body>
+
 </html>
